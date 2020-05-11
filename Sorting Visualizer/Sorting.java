@@ -158,13 +158,109 @@ public class Sorting {
             @Override
             public void run() {
                 int[] arr = visualizer.getArray();
+
                 chooser.turnOffAll();
 
-                System.out.println("quickSort");
+                quick(visualizer, arr, 0, arr.length - 1);
 
                 chooser.turnOn();
             }
         };
-        thread.run();
+        thread.start();
+    }
+
+    private static void quick(Visualizer visualizer, int[] arr, int start, int end) {
+        if (start < end) {
+            int pi = partition(visualizer, arr, start, end);
+
+            quick(visualizer, arr, start, pi - 1);
+            quick(visualizer, arr, pi, end);
+        }
+    }
+
+    private static int partition(Visualizer visualizer, int[] arr, int start, int end) {
+        int pivot = arr[end];
+        int index = start - 1;
+
+        for (int i = start; i < end; i++) {
+            if (arr[i] <= pivot) {
+                index++;
+
+                int temp = arr[i];
+                arr[i] = arr[index];
+                arr[index] = temp;
+
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        visualizer.setArray(arr);
+                    }
+                });
+
+                try {
+                    Thread.sleep(5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        int temp = arr[index + 1];
+        arr[index + 1] = arr[end];
+        arr[end] = temp;
+
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                visualizer.setArray(arr);
+            }
+        });
+
+        try {
+            Thread.sleep(5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return index + 1;
+    }
+
+    public static void reverse(Visualizer visualizer, Chooser chooser) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                int[] arr = visualizer.getArray();
+                int i = 0;
+                int j = arr.length - 1;
+
+                chooser.turnOffAll();
+
+                while (i < j) {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+
+                    i++;
+                    j--;
+
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            visualizer.setArray(arr);
+                        }
+                    });
+            
+                    try {
+                        Thread.sleep(20);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                chooser.turnOn();
+            }
+        };
+        thread.start();
     }
 }

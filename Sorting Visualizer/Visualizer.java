@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Visualizer extends JPanel implements ActionListener {
 
-    private final int SIZE = 500;
+    private final int SIZE = 520;
     private final int LENGTH = 4;
     private final int HEIGHT = 5;
 
@@ -20,7 +20,7 @@ public class Visualizer extends JPanel implements ActionListener {
 
     public Visualizer(Chooser chooser) {
         this.chooser = chooser;
-        arr = new int[125];
+        arr = new int[130];
         rand = new Random();
 
         setPreferredSize(new Dimension(SIZE, SIZE));
@@ -72,6 +72,8 @@ public class Visualizer extends JPanel implements ActionListener {
             Sorting.mergeSort(this, chooser);
         } else if (e.getSource() == chooser.getQuick()) {
             Sorting.quickSort(this, chooser);
+        }else if (e.getSource() == chooser.getReverse()) {
+            Sorting.reverse(this, chooser);
         } else if (e.getSource() == chooser.getRestart()) {
             createRandomArray();            
             repaint();
